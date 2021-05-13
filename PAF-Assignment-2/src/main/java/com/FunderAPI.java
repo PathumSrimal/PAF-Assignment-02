@@ -96,4 +96,17 @@ public class FunderAPI extends HttpServlet {
 		
 		response.getWriter().write(result);
 	}
+	
+	/**
+	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
+	 */
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+
+		Map<String, String> param = getParasMap(request);
+		
+		String result = funderObj.deleteFunder(param.get("funderID").toString());
+		
+		response.getWriter().write(result);
+	}
 }

@@ -163,5 +163,45 @@ public class Funder {
 				 
 				  return output;  
 				  }
+				
+				public String deleteFunder(String funderID) {  
+					
+					String output = ""; 
+				 
+				 try  
+				 {   
+					 Connection con = connect();
+				 
+				  if (con == null)   
+				  {    
+					  return "Error while connecting to the database for deleting.";   
+				  } 
+				 
+				  // create a prepared statement   
+				  String query = "DELETE FROM funder WHERE funderID=?"; 
+				 
+				  PreparedStatement preparedStmt = con.prepareStatement(query); 
+				 
+				  // binding values   
+				  preparedStmt.setInt(1, Integer.parseInt(funderID));       
+				  // execute the statement   
+				  preparedStmt.execute();   
+				  con.close(); 
+				 
+				  //create JSON Object
+				  String newFunder = readFunder();
+				  output = "{\"status\":\"success\", \"data\": \"" + newFunder + "\"}";
+				  }  
+				 catch (Exception e)  
+				 {
+					 
+					  //Create JSON object 
+					  output = "{\"status\":\"error\", \"data\": \"Error while Deleting Funder.\"}";
+					  System.err.println(e.getMessage());  
+					  
+				 } 
+				 
+				 return output; 
+				 }
 		
 }

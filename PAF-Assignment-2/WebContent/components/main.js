@@ -79,3 +79,82 @@ $(document).on("click", ".btnUpdate", function(event)
 
 
 });
+
+
+//Remove Operation
+$(document).on("click", ".btnRemove", function(event){
+	$.ajax(
+	{
+		url : "FunderAPI",
+		type : "DELETE",
+		data : "funderID=" + $(this).data("funderid"),
+		dataType : "text",
+		complete : function(response, status)
+		{
+			onHospitalDeletedComplete(response.responseText, status);
+		}
+	});
+});
+
+function onHospitalDeletedComplete(response, status)
+{
+	if(status == "success")
+	{
+		var resultSet = JSON.parse(response);
+			
+		if(resultSet.status.trim() == "success")
+		{
+			$("#alertSuccess").text("Successfully Deleted.");
+			$("#alertSuccess").show();
+					
+			$("#divItemsGrid").html(resultSet.data);
+	
+		}else if(resultSet.status.trim() == "error"){
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	}else if(status == "error"){
+		$("#alertError").text("Error While Deleting.");
+		$("#alertError").show();
+	}else{
+		$("#alertError").text("Unknown Error While Deleting.");
+		$("#alertError").show();
+	}
+}
+
+//CLIENTMODEL
+function validateHospitalForm() {  
+	// NAME  
+	if ($("#name").val().trim() == "")  {   
+		return "Insert name.";  
+		
+	} 
+		 
+	 // Email 
+	if ($("#email").val().trim() == "")  {   
+		return "Insert Email.";  
+		
+	} 
+	
+	 // CONTACT  
+	if ($("#contact").val().trim() == "")  {   
+		return "Insert contact.";  
+		
+	} 
+	 
+	 // is numerical value  
+	var tmpContact = $("#contact").val().trim();  
+	if (!$.isNumeric(tmpContact))  {   
+		return "Insert a numerical value for Contact Number.";  
+		
+	}
+	
+	// TYPE  
+	if ($("#type").val().trim() == "")  {   
+		return "Insert TYPE.";  
+		
+	} 
+	 
+	 
+	 return true;
+}
