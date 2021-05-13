@@ -81,7 +81,7 @@ public class Funder {
 				return output;
 			}
 
-		//Insert Funder
+				//Insert Funder
 				public String insertFunder(String name, String email, String contact, String type) {
 					
 					String output = "";

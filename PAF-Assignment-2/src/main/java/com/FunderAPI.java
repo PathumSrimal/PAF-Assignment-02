@@ -37,6 +37,17 @@ public class FunderAPI extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String result = funderObj.insertFunder(request.getParameter("name"),  
+				request.getParameter("email"), 
+				request.getParameter("contact"), 
+				request.getParameter("type"));
+		
+		response.getWriter().write(result);
+	}
 
 }
