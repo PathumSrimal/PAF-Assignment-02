@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -80,6 +80,47 @@ public class Funder {
 
 				return output;
 			}
+
+		//Insert Funder
+				public String insertFunder(String name, String email, String contact, String type) {
+					
+					String output = "";
+
+					try {
+						Connection con = connect();  
+
+						if (con == null) {
+							return "Error while connecting to the database";
+						}
+
+						// create a prepared statement   
+						String query = " insert into funder (`funderID`, `name`,`email`,`contact`,`type`)"+" values (?, ?, ?, ?, ?)";
+
+						PreparedStatement preparedStmt = con.prepareStatement(query);
+
+						// binding values 
+						preparedStmt.setInt(1, 0);
+						preparedStmt.setString(2, name);
+						preparedStmt.setString(3, email);
+						preparedStmt.setString(4, contact);
+						preparedStmt.setString(5, type);
+						
+						//execute the statement   
+						preparedStmt.execute();   
+						con.close(); 
+
+						//Create JSON Object to show successful msg.
+						String newFunder = readFunder();
+						output = "{\"status\":\"success\", \"data\": \"" + newFunder + "\"}";
+					}
+					catch (Exception e) {  
+						//Create JSON Object to show Error msg.
+						output = "{\"status\":\"error\", \"data\": \"Error while Inserting Funders.\"}";   
+						System.err.println(e.getMessage());  
+					} 
+
+					 return output; 
+				}
 		
 		
 }
