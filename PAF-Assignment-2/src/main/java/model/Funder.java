@@ -122,5 +122,46 @@ public class Funder {
 					 return output; 
 				}
 		
+				//Update Funder
+				public String updateFunder(String funderID, String name, String email, String contact, String type )  {   
+					
+					String output = ""; 
+				 
+				  try   {   
+					  Connection con = connect();
+				 
+					  if (con == null)    {
+						  return "Error while connecting to the database for updating."; 
+					  } 
+				 
+				   // create a prepared statement    
+					   String query = "UPDATE funder SET name=?,email=?,contact=?,type=? WHERE funderID=?";
+						 
+				   PreparedStatement preparedStmt = con.prepareStatement(query); 
+				 
+				   // binding values    
+				    preparedStmt.setString(1, name);
+					preparedStmt.setString(2, email);
+					preparedStmt.setString(3, contact);
+					preparedStmt.setString(4, type);
+					preparedStmt.setInt(5, Integer.parseInt(funderID));
+				   
+				 
+				   // execute the statement    
+				   preparedStmt.execute();    
+				   con.close(); 
+				 
+				   //create JSON object to show successful msg
+				   String newFunder = readFunder();
+				   output = "{\"status\":\"success\", \"data\": \"" + newFunder + "\"}";
+				   }   
+				  catch (Exception e)   
+				  {    
+					   output = "{\"status\":\"error\", \"data\": \"Error while Updating Funder Details.\"}";      
+					   System.err.println(e.getMessage());   
+				   } 
+				 
+				  return output;  
+				  }
 		
 }
